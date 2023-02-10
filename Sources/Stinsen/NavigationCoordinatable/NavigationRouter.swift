@@ -1,17 +1,17 @@
 import Foundation
 import SwiftUI
 
-public final class NavigationRouter<T>: Routable {
+public final class NavigationRouter<T: AnyObject>: Routable {
     public let id: Int
     public var coordinator: T {
-        _coordinator.value as! T
+        _coordinator
     }
     
-    private var _coordinator: WeakRef<AnyObject>
+    private var _coordinator: T
     
     public init(id: Int, coordinator: T) {
         self.id = id
-        self._coordinator = WeakRef(value: coordinator as AnyObject)
+        self._coordinator = coordinator
     }
 }
 
