@@ -28,13 +28,26 @@ public class NavigationStack<T: NavigationCoordinatable> {
     let initialInput: Any?
     var root: NavigationRoot!
     
-    @Published var value: [NavigationStackItem]
+    @Published var value: [NavigationStackItem] {
+        didSet {
+            print("Stack value updated - \(value.count); \(String(describing: T.self));")
+        }
+    }
     
     public init(initial: PartialKeyPath<T>, _ initialInput: Any? = nil) {
         self.value = []
         self.initial = initial
         self.initialInput = initialInput
         self.root = nil
+    }
+    
+    internal func topMostItem() -> NavigationStackItem? {
+        guard let lastItem = value.last else {
+            return nil
+        }
+        
+        let coordinator = lastItem
+        return coordinator
     }
 }
 
