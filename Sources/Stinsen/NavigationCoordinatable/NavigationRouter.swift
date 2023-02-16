@@ -4,14 +4,14 @@ import SwiftUI
 public final class NavigationRouter<T: NavigationCoordinatable>: Routable {
     public let id: Int
     public var coordinator: T {
-        _coordinator.value as! T
+        _coordinator!
     }
     
-    private var _coordinator: WeakRef<AnyObject>
+    private weak var _coordinator: T?
     
     public init(id: Int, coordinator: T) {
         self.id = id
-        self._coordinator = WeakRef(value: coordinator as AnyObject)
+        self._coordinator = coordinator
     }
 }
 
