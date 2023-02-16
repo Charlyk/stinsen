@@ -380,14 +380,14 @@ public extension NavigationCoordinatable {
     ) -> Output {
         let transition = self[keyPath: route]
         let output = transition.closure(self)(input)
-        stack.value = stack.value + [
+        stack.value.append(
             NavigationStackItem(
                 presentationType: transition.type.type,
                 presentable: output,
                 keyPath: route.hashValue,
                 input: input
             )
-        ]
+        )
         output.parent = self
         return output
     }
