@@ -4,10 +4,10 @@ import SwiftUI
 public final class NavigationRouter<T: NavigationCoordinatable>: Routable {
     public let id: Int
     public var coordinator: T {
-        _coordinator!
+        _coordinator
     }
     
-    private weak var _coordinator: T?
+    private var _coordinator: T
     
     public init(id: Int, coordinator: T) {
         self.id = id
