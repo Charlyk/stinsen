@@ -43,9 +43,15 @@ struct NavigationCoordinatableView<T: NavigationCoordinatable>: View {
                         })
                         .environmentObject(router)
                 )
+                .onReceive(presentationHelper.$presented) { _ in
+                    print("presentationHelper received")
+                }
         } else {
             commonView
                 .environmentObject(router)
+                .onReceive(presentationHelper.$presented) { _ in
+                    print("presentationHelper received")
+                }
         }
         #endif
     }
