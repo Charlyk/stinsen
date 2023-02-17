@@ -27,6 +27,7 @@ public class NavigationStack<T: NavigationCoordinatable> {
     let initial: PartialKeyPath<T>
     let initialInput: Any?
     var root: NavigationRoot!
+    var coordinatableView: NavigationCoordinatableView<T>!
     
     @Published var value: [NavigationStackItem] {
         didSet {
@@ -39,6 +40,11 @@ public class NavigationStack<T: NavigationCoordinatable> {
         self.initial = initial
         self.initialInput = initialInput
         self.root = nil
+    }
+    
+    func getCoordinatableView(for coordinator: T) -> NavigationCoordinatableView<T> {
+        self.coordinatableView = NavigationCoordinatableView(id: -1, coordinator: coordinator)
+        return self.coordinatableView
     }
     
     internal func topMostItem() -> NavigationStackItem? {
