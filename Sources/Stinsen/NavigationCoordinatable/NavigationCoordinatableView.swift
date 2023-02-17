@@ -43,14 +43,16 @@ struct NavigationCoordinatableView<T: NavigationCoordinatable>: View {
                         })
                         .environmentObject(router)
                 )
-                .onReceive(presentationHelper.$presented) { _ in
+                .onReceive(coordinator.stack.$value) { _ in
                     print("presentationHelper received")
+                    self.presentationHelper.setupPresented(coordinator: coordinator)
                 }
         } else {
             commonView
                 .environmentObject(router)
-                .onReceive(presentationHelper.$presented) { _ in
+                .onReceive(coordinator.stack.$value) { _ in
                     print("presentationHelper received")
+                    self.presentationHelper.setupPresented(coordinator: coordinator)
                 }
         }
         #endif
@@ -103,11 +105,6 @@ struct NavigationCoordinatableView<T: NavigationCoordinatable>: View {
     init(id: Int, coordinator: T) {
         self.id = id
         self.coordinator = coordinator
-        
-        coordinator.stack.$value.sink { items in
-            print("NavigationCoordinatableView - \(items.count); \(String(describing: coordinator.self))")
-        }
-        .store(in: &cancellables)
         
         self.presentationHelper = PresentationHelper(
             id: self.id,
