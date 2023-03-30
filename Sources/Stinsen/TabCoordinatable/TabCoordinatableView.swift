@@ -13,12 +13,22 @@ struct TabCoordinatableView<T: TabCoordinatable, U: View>: View {
             AnyView(
                 TabView(selection: $child.activeTab) {
                     ForEach(Array(views.enumerated()), id: \.offset) { view in
-                        view
-                            .element
-                            .tabItem {
-                                coordinator.child.allItems[view.offset].tabItem(view.offset == child.activeTab)
-                            }
-                            .tag(view.offset)
+                        if #available(iOS 15.0, *) {
+                            view
+                                .element
+                                .tabItem {
+                                    coordinator.child.allItems[view.offset].tabItem(view.offset == child.activeTab)
+                                }
+                                .badge(child.badgeValue[view.offset])
+                                .tag(view.offset)
+                        } else {
+                            view
+                                .element
+                                .tabItem {
+                                    coordinator.child.allItems[view.offset].tabItem(view.offset == child.activeTab)
+                                }
+                                .tag(view.offset)
+                        }
                     }
                 }
             )
