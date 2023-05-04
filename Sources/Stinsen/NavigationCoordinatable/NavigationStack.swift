@@ -37,11 +37,6 @@ public class NavigationStack<T: NavigationCoordinatable> {
         self.initial = initial
         self.initialInput = initialInput
         self.root = nil
-        
-        $value.sink { [weak self] (newValue) in
-            self?.childCount = newValue.count
-        }
-        .store(in: &cancellables)
     }
 }
 
