@@ -21,6 +21,7 @@ public class NavigationRoot: ObservableObject {
 /// Represents a stack of routes
 public class NavigationStack<T: NavigationCoordinatable> {
     var dismissalAction: [Int: () -> Void] = [:]
+    private var cancellables = [AnyCancellable]()
     
     weak var parent: ChildDismissable?
     var poppedTo = PassthroughSubject<Int, Never>()
@@ -29,15 +30,18 @@ public class NavigationStack<T: NavigationCoordinatable> {
     var root: NavigationRoot!
     public var childCount = PassthroughSubject<Int, Never>()
     
-    @Published var value: [NavigationStackItem] {
-        didSet { childCount.send(value.count) }
-    }
+    @Published var value: [NavigationStackItem]
     
     public init(initial: PartialKeyPath<T>, _ initialInput: Any? = nil) {
         self.value = []
         self.initial = initial
         self.initialInput = initialInput
         self.root = nil
+        
+        $value.sink { [weak self] (newValue) in
+            self?.childCount.send(newValue.count)
+        }
+        .store(in: &cancellables)
     }
 }
 
