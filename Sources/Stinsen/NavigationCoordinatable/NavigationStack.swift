@@ -27,8 +27,11 @@ public class NavigationStack<T: NavigationCoordinatable> {
     let initial: PartialKeyPath<T>
     let initialInput: Any?
     var root: NavigationRoot!
+    public var childCount = PassthroughSubject<Int, Never>()
     
-    @Published var value: [NavigationStackItem]
+    @Published var value: [NavigationStackItem] {
+        didSet { childCount.send(value.count) }
+    }
     
     public init(initial: PartialKeyPath<T>, _ initialInput: Any? = nil) {
         self.value = []
