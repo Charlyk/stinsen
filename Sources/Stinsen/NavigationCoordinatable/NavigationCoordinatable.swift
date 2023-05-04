@@ -293,6 +293,10 @@ public extension NavigationCoordinatable {
             stack.parent = newValue
         }
     }
+    
+    var childCount: Int {
+        stack.value.count
+    }
 
     func customize(_ view: AnyView) -> some View {
         return view
@@ -354,8 +358,6 @@ public extension NavigationCoordinatable {
             self.stack.value = Array(self.stack.value.prefix(int + 1))
             self.stack.poppedTo.send(int)
         }
-        
-        self.stack.childCount.send(stack.value.count)
     }
     
     func view() -> AnyView {
@@ -390,7 +392,6 @@ public extension NavigationCoordinatable {
                 input: input
             )
         )
-        stack.childCount.send(stack.value.count)
         output.parent = self
         return output
     }
@@ -416,7 +417,6 @@ public extension NavigationCoordinatable {
                 input: nil
             )
         )
-        stack.childCount.send(stack.value.count)
         output.parent = self
         return output
     }
@@ -444,7 +444,6 @@ public extension NavigationCoordinatable {
                 input: input
             )
         )
-        stack.childCount.send(stack.value.count)
         return self
     }
     
@@ -469,7 +468,6 @@ public extension NavigationCoordinatable {
                 input: nil
             )
         )
-        stack.childCount.send(stack.value.count)
         return self
     }
 
