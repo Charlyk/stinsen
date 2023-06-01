@@ -39,11 +39,9 @@ final class PresentationHelper<T: NavigationCoordinatable>: ObservableObject {
                         if #available(iOS 16, *) {
                             self.presented = Presented(
                                 view: AnyView(
-                                    SwiftUI.NavigationStack(
-                                        root: {
-                                            view.navigationBarHidden(true)
-                                        }
-                                    )
+                                    SwiftUI.NavigationStack {
+                                        view.navigationBarHidden(true)
+                                    }
                                 ),
                                 type: .modal
                             )
@@ -101,15 +99,13 @@ final class PresentationHelper<T: NavigationCoordinatable>: ObservableObject {
                             if #available(iOS 16, *) {
                                 self.presented = Presented(
                                     view: AnyView(
-                                        SwiftUI.NavigationStack(
-                                            root: {
-                                                #if os(macOS)
-                                                view
-                                                #else
-                                                view.navigationBarHidden(true)
-                                                #endif
-                                            }
-                                        )
+                                        SwiftUI.NavigationStack {
+                                            #if os(macOS)
+                                            view
+                                            #else
+                                            view.navigationBarHidden(true)
+                                            #endif
+                                        }
                                     ),
                                     type: .fullScreen
                                 )
