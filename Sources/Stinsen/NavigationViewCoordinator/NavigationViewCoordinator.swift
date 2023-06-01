@@ -6,18 +6,26 @@ public class NavigationViewCoordinator<T: Coordinatable>: ViewWrapperCoordinator
     public init(_ childCoordinator: T) {
         super.init(childCoordinator) { view in
             #if os(macOS)
-            AnyView(
+            return AnyView(
                 NavigationView {
                     view
                 }
             )
             #else
-            AnyView(
-                NavigationView {
-                    view
-                }
-                .navigationViewStyle(StackNavigationViewStyle())
-            )
+            if #available(iOS 16, *) {
+                return AnyView(
+                    SwiftUI.NavigationStack {
+                        view
+                    }
+                )
+            } else {
+                return AnyView(
+                    NavigationView {
+                        view
+                    }
+                    .navigationViewStyle(StackNavigationViewStyle())
+                )
+            }
             #endif
         }
     }
